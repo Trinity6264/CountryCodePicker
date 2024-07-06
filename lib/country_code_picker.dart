@@ -19,6 +19,7 @@ class CountryCodePicker extends StatefulWidget {
   final List<String> favorite;
   final TextStyle? textStyle;
   final EdgeInsetsGeometry padding;
+
   final bool showCountryOnly;
   final InputDecoration searchDecoration;
   final TextStyle? searchStyle;
@@ -92,6 +93,8 @@ class CountryCodePicker extends StatefulWidget {
 
   final EdgeInsetsGeometry searchPadding;
 
+  final EdgeInsetsGeometry containerMargin;
+
   const CountryCodePicker({
     this.onChanged,
     this.onInit,
@@ -127,7 +130,9 @@ class CountryCodePicker extends StatefulWidget {
     this.dialogBackgroundColor,
     this.closeIcon = const Icon(Icons.close),
     this.countryList = codes,
-    this.dialogItemPadding = const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+    this.containerMargin = const EdgeInsets.only(right: 4.0, left: 4.0),
+    this.dialogItemPadding =
+        const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
     this.searchPadding = const EdgeInsets.symmetric(horizontal: 24),
     Key? key,
   }) : super(key: key);
@@ -195,7 +200,7 @@ class CountryCodePickerState extends State<CountryCodePicker> {
                         : Clip.hardEdge,
                     decoration: widget.flagDecoration,
                     margin: widget.alignLeft
-                        ? const EdgeInsets.only(right: 16.0, left: 8.0)
+                        ? widget.containerMargin
                         : const EdgeInsets.only(right: 16.0),
                     child: Image.asset(
                       selectedItem!.flagUri!,
