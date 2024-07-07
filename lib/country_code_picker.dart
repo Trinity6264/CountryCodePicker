@@ -105,7 +105,7 @@ class CountryCodePicker extends StatefulWidget {
   const CountryCodePicker({
     this.onChanged,
     this.onInit,
-    this.initialSelection,
+    this.initialSelection = "Ghana",
     this.favorite = const [],
     this.textStyle,
     this.padding = const EdgeInsets.all(8.0),
@@ -363,6 +363,7 @@ class CountryCodePickerState extends State<CountryCodePicker> {
       builder: (context) => SelectionBottomSheet(
         elements,
         favoriteElements,
+        selectedElement: widget.initialSelection,
         showCountryOnly: widget.showCountryOnly,
         emptySearchBuilder: widget.emptySearchBuilder,
         searchDecoration: widget.searchDecoration,

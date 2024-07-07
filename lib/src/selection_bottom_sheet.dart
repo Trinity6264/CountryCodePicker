@@ -7,6 +7,7 @@ import 'country_localizations.dart';
 /// selection dialog used for selection of the country code
 class SelectionBottomSheet extends StatefulWidget {
   final List<CountryCode> elements;
+  final String? selectedElement;
   final bool? showCountryOnly;
   final InputDecoration searchDecoration;
   final TextStyle? searchStyle;
@@ -44,6 +45,7 @@ class SelectionBottomSheet extends StatefulWidget {
     this.searchStyle,
     this.textStyle,
     this.boxDecoration,
+    this.selectedElement,
     this.showFlag,
     this.flagDecoration,
     this.flagWidth = 32,
@@ -68,6 +70,7 @@ class SelectionBottomSheet extends StatefulWidget {
 class _SelectionBottomSheetState extends State<SelectionBottomSheet> {
   /// this is useful for filtering purpose
   late List<CountryCode> filteredElements;
+  CountryCode? selectedCountryCode;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -85,18 +88,48 @@ class _SelectionBottomSheetState extends State<SelectionBottomSheet> {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             const BottomSheetHandler(),
-            if (!widget.hideCloseIcon)
-              Container(
-                margin: const EdgeInsets.only(right: 16, top: 16),
-                decoration: const BoxDecoration(
-                  color: Color(0xfff4f3f8),
-                  shape: BoxShape.circle,
-                ),
-                child: IconButton(
-                  onPressed: () => Navigator.pop(context),
-                  icon: const Icon(Icons.close, color: Color(0xff012150)),
-                ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    "Select Nationality",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 0.1,
+                      color: Color(0xff1A1B1F),
+                    ),
+                  ),
+                  if (!widget.hideCloseIcon)
+                    Container(
+                      margin: const EdgeInsets.only(top: 16),
+                      decoration: const BoxDecoration(
+                        color: Color(0xfff4f3f8),
+                        shape: BoxShape.circle,
+                      ),
+                      child: IconButton(
+                        onPressed: () => Navigator.pop(context),
+                        icon: const Icon(Icons.close, color: Color(0xff012150)),
+                      ),
+                    ),
+                ],
               ),
+            ),
+            if (selectedCountryCode != null)
+              Align(
+                alignment: Alignment.centerLeft,
+                child: InkWell(
+                    onTap: () {
+                      _selectItem(selectedCountryCode!);
+                    },
+                    child: Padding(
+                      padding: widget.dialogItemPadding,
+                      child: _buildOption(selectedCountryCode!),
+                    )),
+              ),
+            const Divider(),
             if (!widget.hideSearch)
               Padding(
                 padding: widget.searchPadding,
@@ -192,22 +225,31 @@ class _SelectionBottomSheetState extends State<SelectionBottomSheet> {
   @override
   void initState() {
     filteredElements = widget.elements;
+    fetchSelected(widget.selectedElement ?? "Ghana");
     super.initState();
   }
 
   void _filterElements(String s) {
     s = s.toUpperCase();
     setState(() {
-      filteredElements = widget.elements
-          .where((e) =>
-              e.code!.contains(s) ||
-              e.dialCode!.contains(s) ||
-              e.name!.toUpperCase().contains(s))
-          .toList();
+      filteredElements = widget.elements.where((e) {
+        return e.code!.contains(s) ||
+            e.dialCode!.contains(s) ||
+            e.name!.toUpperCase().contains(s);
+      }).toList();
     });
   }
 
+  void fetchSelected(String value) {
+    selectedCountryCode = filteredElements.firstWhere((e) =>
+        e.code!.contains(value.toUpperCase()) ||
+        e.dialCode!.contains(value.toUpperCase()) ||
+        e.name!.toUpperCase().contains(value.toUpperCase()));
+    setState(() {});
+  }
+
   void _selectItem(CountryCode e) {
+    fetchSelected(e.name!);
     Navigator.pop(context, e);
   }
 }

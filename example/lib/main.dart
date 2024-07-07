@@ -148,7 +148,7 @@ class MyAppState extends State<MyApp> {
                   hideMainText: true,
                   showFlagMain: true,
                   showFlag: true,
-                  initialSelection: 'TF',
+                  initialSelection: 'Ghana',
                   hideSearch: true,
                   showCountryOnly: true,
                   showOnlyCountryWhenClosed: true,
