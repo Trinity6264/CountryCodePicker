@@ -1,0 +1,4 @@
+enum OpenType{
+  dialog,
+  bottomSheet,
+}

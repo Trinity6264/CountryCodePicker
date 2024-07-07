@@ -1,6 +1,7 @@
 library country_code_picker;
 
 import 'package:collection/collection.dart' show IterableExtension;
+import 'package:country_code_picker/src/enums/open_type.dart';
 import 'package:country_code_picker/src/selection_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 
@@ -86,6 +87,9 @@ class CountryCodePicker extends StatefulWidget {
   /// [BoxDecoration] for the flag image
   final Decoration? flagDecoration;
 
+  /// [OpenType] is for the dialog or bottom sheet
+  final OpenType openType;
+
   /// An optional argument for injecting a list of countries
   /// with customized codes.
   final List<Map<String, String>> countryList;
@@ -106,6 +110,7 @@ class CountryCodePicker extends StatefulWidget {
     this.showCountryOnly = false,
     this.searchDecoration = const InputDecoration(),
     this.searchStyle,
+    this.openType = OpenType.dialog,
     this.dialogTextStyle,
     this.emptySearchBuilder,
     this.showOnlyCountryWhenClosed = false,
@@ -177,13 +182,19 @@ class CountryCodePickerState extends State<CountryCodePicker> {
     Widget internalWidget;
     if (widget.builder != null) {
       internalWidget = InkWell(
-        onTap: widget.enabled ? showCountryCodePickerBottomSheet : null,
+        onTap: widget.enabled
+            ? widget.openType == OpenType.bottomSheet
+                ? showCountryCodePickerBottomSheet
+                : showCountryCodePickerDialog
+            : null,
         child: widget.builder!(selectedItem),
       );
-    } 
-    else {
+    } else {
       internalWidget = TextButton(
-        onPressed: widget.enabled ? showCountryCodePickerDialog : null,
+        onPressed: widget.enabled ? widget.openType == OpenType.bottomSheet
+                ? showCountryCodePickerBottomSheet
+                : showCountryCodePickerDialog
+            : null,
         child: Padding(
           padding: widget.padding,
           child: Flex(
@@ -340,6 +351,7 @@ class CountryCodePickerState extends State<CountryCodePicker> {
       _publishSelection(item);
     }
   }
+
   void showCountryCodePickerBottomSheet() async {
     final item = await showModalBottomSheet(
       barrierColor: widget.barrierColor ?? Colors.grey.withOpacity(0.5),
