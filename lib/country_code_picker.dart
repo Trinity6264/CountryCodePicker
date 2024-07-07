@@ -292,17 +292,15 @@ class CountryCodePickerState extends State<CountryCodePicker> {
   void initState() {
     super.initState();
 
-    if (widget.initialSelection != null) {
+    if (widget.initialSelection != '') {
       selectedItem = elements.firstWhere(
-          (item) =>
-              (item.code!.toUpperCase() ==
-                  widget.initialSelection!.toUpperCase()) ||
-              (item.dialCode == widget.initialSelection) ||
-              (item.name!.toUpperCase() ==
-                  widget.initialSelection!.toUpperCase()),
-          orElse: () => elements[0]);
-    } else {
-      selectedItem = elements[0];
+        (item) =>
+            (item.code!.toUpperCase() ==
+                widget.initialSelection!.toUpperCase()) ||
+            (item.dialCode == widget.initialSelection) ||
+            (item.name!.toUpperCase() ==
+                widget.initialSelection!.toUpperCase()),
+      );
     }
 
     favoriteElements = elements
