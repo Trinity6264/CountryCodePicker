@@ -1,3 +1,4 @@
+import 'package:country_code_picker/src/components/bottom_sheet_handler.dart';
 import 'package:flutter/material.dart';
 
 import 'country_code.dart';
@@ -69,78 +70,76 @@ class _SelectionBottomSheetState extends State<SelectionBottomSheet> {
   late List<CountryCode> filteredElements;
 
   @override
-  Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.all(0.0),
-        child: Container(
-          clipBehavior: Clip.hardEdge,
-          width: widget.size?.width ?? MediaQuery.of(context).size.width,
-          height:
-              widget.size?.height ?? MediaQuery.of(context).size.height * 0.85,
-          decoration: widget.boxDecoration ??
-              BoxDecoration(
-                color: widget.backgroundColor ?? Colors.white,
-                borderRadius: const BorderRadius.all(Radius.circular(16.0)),
-              ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              if (!widget.hideCloseIcon)
-                Container(
-                  margin: const EdgeInsets.only(right: 16, top: 16),
-                  decoration: const BoxDecoration(
-                    color: Color(0xfff4f3f8),
-                    shape: BoxShape.circle,
-                  ),
-                  child: IconButton(
-                    onPressed: () => Navigator.pop(context),
-                    icon: const Icon(Icons.close, color: Color(0xff012150)),
-                  ),
+  Widget build(BuildContext context) => Container(
+        clipBehavior: Clip.hardEdge,
+        width: widget.size?.width ?? MediaQuery.of(context).size.width,
+        height:
+            widget.size?.height ?? MediaQuery.of(context).size.height * 0.85,
+        decoration: widget.boxDecoration ??
+            BoxDecoration(
+              color: widget.backgroundColor ?? Colors.white,
+              borderRadius: const BorderRadius.all(Radius.circular(16.0)),
+            ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            const BottomSheetHandler(),
+            if (!widget.hideCloseIcon)
+              Container(
+                margin: const EdgeInsets.only(right: 16, top: 16),
+                decoration: const BoxDecoration(
+                  color: Color(0xfff4f3f8),
+                  shape: BoxShape.circle,
                 ),
-              if (!widget.hideSearch)
-                Padding(
-                  padding: widget.searchPadding,
-                  child: TextField(
-                    style: widget.searchStyle,
-                    decoration: widget.searchDecoration,
-                    onChanged: _filterElements,
-                  ),
-                ),
-              Expanded(
-                child: ListView(
-                  children: [
-                    widget.favoriteElements.isEmpty
-                        ? const DecoratedBox(decoration: BoxDecoration())
-                        : Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              ...widget.favoriteElements.map((f) => InkWell(
-                                  onTap: () {
-                                    _selectItem(f);
-                                  },
-                                  child: Padding(
-                                    padding: widget.dialogItemPadding,
-                                    child: _buildOption(f),
-                                  ))),
-                              const Divider(),
-                            ],
-                          ),
-                    if (filteredElements.isEmpty)
-                      _buildEmptySearchWidget(context)
-                    else
-                      ...filteredElements.map((e) => InkWell(
-                          onTap: () {
-                            _selectItem(e);
-                          },
-                          child: Padding(
-                            padding: widget.dialogItemPadding,
-                            child: _buildOption(e),
-                          ))),
-                  ],
+                child: IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: const Icon(Icons.close, color: Color(0xff012150)),
                 ),
               ),
-            ],
-          ),
+            if (!widget.hideSearch)
+              Padding(
+                padding: widget.searchPadding,
+                child: TextField(
+                  style: widget.searchStyle,
+                  decoration: widget.searchDecoration,
+                  onChanged: _filterElements,
+                ),
+              ),
+            Expanded(
+              child: ListView(
+                children: [
+                  widget.favoriteElements.isEmpty
+                      ? const DecoratedBox(decoration: BoxDecoration())
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ...widget.favoriteElements.map((f) => InkWell(
+                                onTap: () {
+                                  _selectItem(f);
+                                },
+                                child: Padding(
+                                  padding: widget.dialogItemPadding,
+                                  child: _buildOption(f),
+                                ))),
+                            const Divider(),
+                          ],
+                        ),
+                  if (filteredElements.isEmpty)
+                    _buildEmptySearchWidget(context)
+                  else
+                    ...filteredElements.map((e) => InkWell(
+                        onTap: () {
+                          _selectItem(e);
+                        },
+                        child: Padding(
+                          padding: widget.dialogItemPadding,
+                          child: _buildOption(e),
+                        ))),
+                ],
+              ),
+            ),
+          ],
         ),
       );
 

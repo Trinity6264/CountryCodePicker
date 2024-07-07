@@ -143,6 +143,7 @@ class MyAppState extends State<MyApp> {
                 height: 60,
                 child: CountryCodePicker(
                   onChanged: print,
+                  openType: OpenType.bottomSheet,
                   builder: (e) => const Text("Hello"),
                   hideMainText: true,
                   showFlagMain: true,

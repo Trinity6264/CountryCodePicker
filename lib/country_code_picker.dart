@@ -16,7 +16,6 @@ export 'src/country_localizations.dart';
 export 'src/selection_dialog.dart';
 export 'src/enums/open_type.dart';
 
-
 class CountryCodePicker extends StatefulWidget {
   final ValueChanged<CountryCode>? onChanged;
   final ValueChanged<CountryCode?>? onInit;
@@ -194,7 +193,8 @@ class CountryCodePickerState extends State<CountryCodePicker> {
       );
     } else {
       internalWidget = TextButton(
-        onPressed: widget.enabled ? widget.openType == OpenType.bottomSheet
+        onPressed: widget.enabled
+            ? widget.openType == OpenType.bottomSheet
                 ? showCountryCodePickerBottomSheet
                 : showCountryCodePickerDialog
             : null,
@@ -359,6 +359,7 @@ class CountryCodePickerState extends State<CountryCodePicker> {
     final item = await showModalBottomSheet(
       barrierColor: widget.barrierColor ?? Colors.grey.withOpacity(0.5),
       context: context,
+      isScrollControlled: true,
       builder: (context) => SelectionBottomSheet(
         elements,
         favoriteElements,
