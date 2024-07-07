@@ -1,6 +1,7 @@
 library country_code_picker;
 
 import 'package:collection/collection.dart' show IterableExtension;
+import 'package:country_code_picker/src/selection_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 
 import 'src/country_code.dart';
@@ -176,10 +177,11 @@ class CountryCodePickerState extends State<CountryCodePicker> {
     Widget internalWidget;
     if (widget.builder != null) {
       internalWidget = InkWell(
-        onTap: widget.enabled ? showCountryCodePickerDialog : null,
+        onTap: widget.enabled ? showCountryCodePickerBottomSheet : null,
         child: widget.builder!(selectedItem),
       );
-    } else {
+    } 
+    else {
       internalWidget = TextButton(
         onPressed: widget.enabled ? showCountryCodePickerDialog : null,
         child: Padding(
@@ -327,6 +329,41 @@ class CountryCodePickerState extends State<CountryCodePicker> {
             searchPadding: widget.searchPadding,
           ),
         ),
+      ),
+    );
+
+    if (item != null) {
+      setState(() {
+        selectedItem = item;
+      });
+
+      _publishSelection(item);
+    }
+  }
+  void showCountryCodePickerBottomSheet() async {
+    final item = await showModalBottomSheet(
+      barrierColor: widget.barrierColor ?? Colors.grey.withOpacity(0.5),
+      context: context,
+      builder: (context) => SelectionBottomSheet(
+        elements,
+        favoriteElements,
+        showCountryOnly: widget.showCountryOnly,
+        emptySearchBuilder: widget.emptySearchBuilder,
+        searchDecoration: widget.searchDecoration,
+        searchStyle: widget.searchStyle,
+        textStyle: widget.dialogTextStyle,
+        boxDecoration: widget.boxDecoration,
+        showFlag: widget.showFlagDialog ?? widget.showFlag,
+        flagWidth: widget.flagWidth,
+        size: widget.dialogSize,
+        backgroundColor: widget.dialogBackgroundColor,
+        barrierColor: widget.barrierColor,
+        hideSearch: widget.hideSearch,
+        hideCloseIcon: widget.hideCloseIcon,
+        closeIcon: widget.closeIcon,
+        flagDecoration: widget.flagDecoration,
+        dialogItemPadding: widget.dialogItemPadding,
+        searchPadding: widget.searchPadding,
       ),
     );
 

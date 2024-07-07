@@ -142,6 +142,22 @@ class MyAppState extends State<MyApp> {
                 width: 400,
                 height: 60,
                 child: CountryCodePicker(
+                  onChanged: print,
+                  builder: (e) => const Text("Hello"),
+                  hideMainText: true,
+                  showFlagMain: true,
+                  showFlag: true,
+                  initialSelection: 'TF',
+                  hideSearch: true,
+                  showCountryOnly: true,
+                  showOnlyCountryWhenClosed: true,
+                  alignLeft: true,
+                ),
+              ),
+              SizedBox(
+                width: 400,
+                height: 60,
+                child: CountryCodePicker(
                   onChanged: (element) => debugPrint(element.toLongString()),
                   initialSelection: 'TF',
                   showCountryOnly: true,
