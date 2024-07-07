@@ -1,12 +1,13 @@
 library country_code_picker;
 
 import 'package:collection/collection.dart' show IterableExtension;
-import 'package:country_code_picker/src/enums/open_type.dart';
+
 import 'package:country_code_picker/src/selection_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 
 import 'src/country_code.dart';
 import 'src/country_codes.dart';
+import 'src/enums/open_type.dart';
 import 'src/selection_dialog.dart';
 
 export 'src/country_code.dart';
